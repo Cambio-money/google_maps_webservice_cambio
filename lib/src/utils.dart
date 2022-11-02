@@ -62,10 +62,24 @@ abstract class GoogleWebService {
   }
 
   void dispose() => httpClient.close();
-
+  /*
+  old
   @protected
   Future<Response> doGet(String url, {Map<String, String>? headers}) {
     return httpClient.get(Uri.parse(url), headers: headers);
+  }
+  */
+  //cambio swap here 
+  @protected
+  Future<Response> doGet(String url, {Map<String, String>? headers}) {
+    // right here
+    print("SWAPPING CORS");
+    Uri corsUri = Uri.parse(
+            "https://us-central1-cambio-dev-281715.cloudfunctions.net/cors-anywhere")
+        .replace(queryParameters: {"u": url});
+
+    //return httpClient.get(Uri.parse(url), headers: headers);
+    return httpClient.get(corsUri, headers: headers);
   }
 
   @protected
